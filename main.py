@@ -12,4 +12,7 @@ with serial.Serial(monitor_path, 115200) as ser:
     ser.readline() #discard startup line
     while True:
         line = ser.readline().decode('utf-8').strip()
-        print(line)
+        (station, temp, humidity, count) = line.split()
+        station_number = station.strip("R")
+        uptime = count.split(":")[1]
+        print(F"Station: {station_number} Status: {temp}, {humidity} Uptime:{uptime}")
