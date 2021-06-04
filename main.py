@@ -7,9 +7,9 @@ high_temp = 66
 crit_temp = 67
 
 def soundAlarm(station, temp, **kwargs):
+    alert_type = "High"
     # dummy function
     for key, value in kwargs:
-        alert_type = "High"
         if key == crit and value:
             alert_type="Critical"
             # other crit code here.
