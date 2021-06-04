@@ -15,4 +15,7 @@ with serial.Serial(monitor_path, 115200) as ser:
         (station, temp, humidity, count) = line.split()
         station_number = station.strip("R")
         uptime = count.split(":")[1]
-        print(F"Station: {station_number} Status: {temp}, {humidity} Uptime:{uptime}")
+        temp = float(temp.strip('f'))
+        if temp > 70:
+            soundAlarm()
+        print(F"Station: {station_number} Status: {temp}f, {humidity} Uptime:{uptime}")
