@@ -8,3 +8,8 @@ if not os.path.exists(monitor_path):
     print(F"Device: {monitor_path} not found.")
     sys.exit(1)
 
+with serial.Serial(monitor_path, 115200) as ser:
+    ser.readline() #discard startup line
+    while True:
+        line = ser.readline().decode('utf-8').strip()
+        print(line)
