@@ -3,8 +3,8 @@ import sys
 import os
 
 monitor_path = '/dev/ttyUSB0'
-high_temp = 66
-crit_temp = 67
+high_temp = 68
+crit_temp = 72
 
 def soundAlarm(station, temp, **kwargs):
     alert_type = "High"
