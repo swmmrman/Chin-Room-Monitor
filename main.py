@@ -23,10 +23,11 @@ def soundAlarm(station, temp, **kwargs):
 if not os.path.exists(monitor_path):
     print(F"Device: {monitor_path} not found.")
     sys.exit(1)
-
+print("")
 with serial.Serial(monitor_path, 115200) as ser:
     ser.readline() #discard startup line
     while True:
+        print(F"\033[{len(stations)*3}A", end="")
         line = ser.readline().decode('utf-8').strip()
         (station, temp, humidity, count) = line.split()
         station_number = station.strip("R")
@@ -37,6 +38,8 @@ with serial.Serial(monitor_path, 115200) as ser:
             stations[station_number] = Stations.Station(station_number, temp, humidity)
         else:
             stations[station_number].update(temp, humidity)
+        for st in stations.values():
+            st.print_station()
         if temp > high_temp:
             soundAlarm(station_number, temp)
         elif temp > crit_temp:
