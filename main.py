@@ -3,8 +3,8 @@ import sys
 import os
 
 monitor_path = '/dev/ttyUSB0'
-high_temp = 68
-crit_temp = 72
+high_temp = 68.5
+crit_temp = 72.5
 
 def soundAlarm(station, temp, **kwargs):
     alert_type = "High"
@@ -33,4 +33,4 @@ with serial.Serial(monitor_path, 115200) as ser:
             soundAlarm(station_number, temp)
         elif temp > crit_temp:
             soundAlarm(station_number, temp, crit=True)
-        print(F"Station: {station_number} Status: {temp}f, {humidity} Uptime:{uptime}")
+        print(F"Station: {station_number} Status: {temp:0.2f}f, {humidity} Uptime:{uptime}")
