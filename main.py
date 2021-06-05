@@ -46,5 +46,5 @@ with serial.Serial(monitor_path, 115200) as ser:
         min_h = stations[station_number].low_humidity
         max_h = stations[station_number].high_humidity
         print(F"Station: {station_number} \n"
-              F"Temperature: {temp:0.1f}f Max:{max_t:0.1f}f Min:{min_t:0.1f}f\n"
-              F"Humidity: {humidity:}% Max:{max_h:0.1f}% {min_h:0.1f}%")
+              F"Temperature: \t{temp:0.1f}f \tMax:{max_t:0.1f}f \tMin:{min_t:0.1f}f\n"
+              F"Humidity: \t{humidity:}% \tMax:{max_h:0.1f}% \tMin:{min_h:0.1f}%")
