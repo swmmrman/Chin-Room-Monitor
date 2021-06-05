@@ -19,3 +19,9 @@ class Station:
             self.high_humidity = humidity
         elif self.low_humidity > humidity:
             self.low_humidity = humidity
+
+    def print(self):
+        ###Print a station out"""
+        print(F"Station: {self.number} \n"
+              F"Temperature: \t{self.current_temp:0.1f}f \tMax:{self.high_temp:0.1f}f \tMin:{self.low_temp:0.1f}f\n"
+              F"Humidity: \t{self.current_humidity:0.1f}% \tMax:{self.high_humidity:0.1f}% \tMin:{self.low_humidity:0.1f}%")

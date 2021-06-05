@@ -41,10 +41,3 @@ with serial.Serial(monitor_path, 115200) as ser:
             soundAlarm(station_number, temp)
         elif temp > crit_temp:
             soundAlarm(station_number, temp, crit=True)
-        min_t = stations[station_number].low_temp
-        max_t = stations[station_number].high_temp
-        min_h = stations[station_number].low_humidity
-        max_h = stations[station_number].high_humidity
-        print(F"Station: {station_number} \n"
-              F"Temperature: \t{temp:0.1f}f \tMax:{max_t:0.1f}f \tMin:{min_t:0.1f}f\n"
-              F"Humidity: \t{humidity:}% \tMax:{max_h:0.1f}% \tMin:{min_h:0.1f}%")
