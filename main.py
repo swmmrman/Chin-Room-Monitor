@@ -1,6 +1,7 @@
 import serial
 import sys
 import os
+import libs.stations
 
 monitor_path = '/dev/ttyUSB0'
 high_temp = 68.5
