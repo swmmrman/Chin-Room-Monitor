@@ -16,7 +16,7 @@ def soundAlarm(station, temp, **kwargs):
         if key == crit and value:
             alert_type="Critical"
             # other crit code here.
-    print(F"{alert_type} temp reached on Station {station}: {temp}f")
+    #print(F"{alert_type} temp reached on Station {station}: {temp}f")
 
 
 
