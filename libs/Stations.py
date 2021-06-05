@@ -1,4 +1,4 @@
-class station:
+class Station:
     def __init__(self, number, temp, humidity):
         self.number = number
         self.high_temp = temp
