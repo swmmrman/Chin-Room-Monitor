@@ -18,12 +18,14 @@ crit_temp = 72.5
 
 stations = {}
 
-def soundAlarm(station, temp, **kwargs):
+def soundAlarm(station, temp, outfile):
     alert_type = "High"
     # dummy function
     for key, value in kwargs:
         if key == crit and value:
             alert_type="Critical"
+    out = Output.Output(outfile)
+    out.update_page(F"Over Station:{station} temp:{temp}f")
             # other crit code here.
     #print(F"{alert_type} temp reached on Station {station}: {temp}f")
 
@@ -32,9 +34,8 @@ def soundAlarm(station, temp, **kwargs):
 if not os.path.exists(monitor_path):
     print(F"Device: {monitor_path} not found.")
     sys.exit(1)
-print("")
 with serial.Serial(monitor_path, 115200) as ser:
-    ser.readline() #discard startup line
+    print(ser.readline().decode('utf-8')) #discard startup line
     while True:
         print(F"\033[{len(stations)*3}A", end="")
         line = ser.readline().decode('utf-8').strip()
@@ -49,7 +50,7 @@ with serial.Serial(monitor_path, 115200) as ser:
             stations[station_number].update(temp, humidity)
         for st in stations.values():
             st.print_station()
-        if temp > high_temp:
-            soundAlarm(station_number, temp)
-        elif temp > crit_temp:
-            soundAlarm(station_number, temp, crit=True)
+        if temp > crit_temp:
+            soundAlarm(station_number, temp, outfile)
+        #elif temp > high_temp:
+            #soundAlarm(station_number, temp, outfile)
