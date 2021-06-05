@@ -43,4 +43,8 @@ with serial.Serial(monitor_path, 115200) as ser:
             soundAlarm(station_number, temp, crit=True)
         min_t = stations[station_number].low_temp
         max_t = stations[station_number].high_temp
-        print(F"Station: {station_number} Status: {temp:0.2f}f {max_t}f, {min_t}f, {humidity}")
+        min_h = stations[station_number].low_humidity
+        max_h = stations[station_number].high_humidity
+        print(F"Station: {station_number} \n"
+              F"Temperature: {temp:0.1f}f Max:{max_t:0.1f}f Min:{min_t:0.1f}f\n"
+              F"Humidity: {humidity:}% Max:{max_h:0.1f}% {min_h:0.1f}%")
