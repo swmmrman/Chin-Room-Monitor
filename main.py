@@ -2,6 +2,15 @@ import serial
 import sys
 import os
 import libs.Stations as Stations
+from libs import Output
+
+outfile = ""
+try:
+    f = open("param.cfg", "r")
+    outfile = f.readline().strip("\n")
+except FileNotFoundError:
+    print("param.cfg is missing.")
+    sys.exit(1)
 
 monitor_path = '/dev/ttyUSB0'
 high_temp = 68.5
