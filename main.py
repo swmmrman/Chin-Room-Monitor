@@ -34,4 +34,4 @@ with serial.Serial(monitor_path, 115200) as ser:
             soundAlarm(station_number, temp)
         elif temp > crit_temp:
             soundAlarm(station_number, temp, crit=True)
-        print(F"Station: {station_number} Status: {temp:0.2f}f, {humidity} Uptime:{uptime}")
+        print(F"Station: {station_number} Status: {temp:0.2f}f, {humidity}")
