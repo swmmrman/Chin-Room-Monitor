@@ -3,6 +3,7 @@ import sys
 import os
 import libs.Stations as Stations
 from libs import Output
+from collections import OrderedDict
 
 outfile = ""
 try:
@@ -39,6 +40,7 @@ with serial.Serial(monitor_path, 115200) as ser:
         humidity = float(humidity.strip("%"))
         if station_number not in stations:
             stations[station_number] = Stations.Station(station_number, temp, humidity)
+            stations = OrderedDict(sorted(stations.items()))
         else:
             stations[station_number].update(temp, humidity)
         for st in stations.values():
