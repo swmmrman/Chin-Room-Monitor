@@ -19,15 +19,8 @@ crit_temp = 72.5
 stations = {}
 
 def soundAlarm(station, temp, outfile):
-    alert_type = "High"
-    # dummy function
-    for key, value in kwargs:
-        if key == crit and value:
-            alert_type="Critical"
     out = Output.Output(outfile)
     out.update_page(F"Over Station:{station} temp:{temp}f")
-            # other crit code here.
-    #print(F"{alert_type} temp reached on Station {station}: {temp}f")
 
 
 
