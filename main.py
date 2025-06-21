@@ -13,7 +13,13 @@ except FileNotFoundError:
     print("param.cfg is missing.")
     sys.exit(1)
 
-monitor_path = '/dev/ttyUSB0'
+if len(sys.argv) == 2:
+    num = sys.argv[1]
+else:
+    num = 0
+
+monitor_path = f'/dev/tty{num}'
+
 high_temp = 68.5
 crit_temp = 72.5
 
