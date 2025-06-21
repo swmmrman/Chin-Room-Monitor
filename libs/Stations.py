@@ -22,6 +22,6 @@ class Station:
 
     def print_station(self):
         ###Print a station out"""
-        print(F"Station: {self.number} \n"
-              F"Temperature: \t{self.current_temp:0.1f}f \tMax:{self.high_temp:0.1f}f \tMin:{self.low_temp:0.1f}f\n"
-              F"Humidity: \t{self.current_humidity:0.1f}% \tMax:{self.high_humidity:0.1f}% \tMin:{self.low_humidity:0.1f}%")
+        return(F"\033[KStation: {self.number} \n"
+              F"\033[KTemperature: \t{self.current_temp:0.1f}f \tMax:{self.high_temp:0.1f}f \tMin:{self.low_temp:0.1f}f\n"
+              F"\033[KHumidity: \t{self.current_humidity:0.1f}% \tMax:{self.high_humidity:0.1f}% \tMin:{self.low_humidity:0.1f}%\n")
