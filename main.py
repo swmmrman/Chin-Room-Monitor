@@ -21,7 +21,7 @@ else:
 monitor_path = f'/dev/tty{num}'
 
 high_temp = 68.5
-crit_temp = 72.5
+crit_temp = 75.0
 
 stations = {}
 
@@ -36,8 +36,10 @@ if not os.path.exists(monitor_path):
     sys.exit(1)
 with serial.Serial(monitor_path, 115200) as ser:
     print(ser.readline().decode('utf-8')) #discard startup line
+    pageFile = Output.Output(outfile)
     while True:
-        print(F"\033[{len(stations)*3}A", end="")
+        out = ""
+        pre = F"\033[{len(stations)*3}A"
         line = ser.readline().decode('utf-8').strip()
         (station, temp, humidity, count) = line.split()
         station_number = station.strip("R")
@@ -50,8 +52,11 @@ with serial.Serial(monitor_path, 115200) as ser:
         else:
             stations[station_number].update(temp, humidity)
         for st in stations.values():
-            st.print_station()
-        if temp > crit_temp:
-            soundAlarm(station_number, temp, outfile)
+            out += st.print_station()
+        print(F"{pre}{out}", end="")
+        cleanout = out.replace("\033[K", "")
+        pageFile.update_page(cleanout)
+        #if temp > crit_temp:
+        #    soundAlarm(station_number, temp, outfile)
         #elif temp > high_temp:
             #soundAlarm(station_number, temp, outfile)
