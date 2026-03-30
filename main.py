@@ -62,6 +62,5 @@ with serial.Serial(monitor_path, 115200) as ser:
 
         print(f"{pre}{out}", end="")
         cleanout = out.replace("\033[K", "")
-        cleanalert = outa.replace("fine", "")
         pageFile.update_page(cleanout)
-        alertFile.update_page(cleanalert)
+        alertFile.update_page(outa)
