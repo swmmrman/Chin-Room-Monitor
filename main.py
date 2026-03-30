@@ -2,6 +2,7 @@ import os
 import sys
 from collections import OrderedDict
 
+import libs.Alerts as Alerts
 import libs.Stations as Stations
 import serial
 from libs import Output
@@ -27,12 +28,7 @@ high_temp = 68.5
 crit_temp = 75.0
 
 stations = {}
-
-
-def set_alarm(alerting, station, temp, outfile):
-    out = Output.Output(outfile)
-    out.update_page(f"Over Station:{station} temp:{temp}f")
-
+alerts = {}
 
 if not os.path.exists(monitor_path):
     print(f"Device: {monitor_path} not found.")
@@ -43,6 +39,7 @@ with serial.Serial(monitor_path, 115200) as ser:
     alertFile = Output.Output(alertfile)
     while True:
         out = ""
+        outa = ""
         pre = f"\033[{len(stations) * 3}A"
         line = ser.readline().decode("utf-8").strip()
         (station, temp, humidity, count) = line.split()
@@ -53,16 +50,18 @@ with serial.Serial(monitor_path, 115200) as ser:
         if station_number not in stations:
             stations[station_number] = Stations.Station(station_number, temp, humidity)
             stations = OrderedDict(sorted(stations.items()))
+            alerts[station_number] = Alerts.Alert(station_number, temp)
+            alerts = OrderedDict(sorted(alerts.items()))
         else:
             stations[station_number].update(temp, humidity)
+            alerts[station_number].update(temp)
         for st in stations.values():
             out += st.print_station()
+        for al in alerts.values():
+            outa += al.print_alert()
+
         print(f"{pre}{out}", end="")
         cleanout = out.replace("\033[K", "")
+        cleanalert = outa.replace("fine", "")
         pageFile.update_page(cleanout)
-        # if temp > crit_temp:
-        #     set_alarm(2, station_number, temp, alertFile)
-        # elif temp > high_temp:
-        #     set_alarm(1, station_number, temp, alertFile)
-        # else:
-        #     set_alarm(0, station_number, temp, alertFile)
+        alertFile.update_page(cleanalert)
