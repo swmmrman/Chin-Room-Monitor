@@ -7,9 +7,11 @@ import serial
 from libs import Output
 
 outfile = ""
+alertfile = ""
 try:
     f = open("param.cfg", "r")
     outfile = f.readline().strip("\n")
+    alertfile = f.readline().strip("\n")
 except FileNotFoundError:
     print("param.cfg is missing.")
     sys.exit(1)
@@ -38,6 +40,7 @@ if not os.path.exists(monitor_path):
 with serial.Serial(monitor_path, 115200) as ser:
     print(ser.readline().decode("utf-8"))  # discard startup line
     pageFile = Output.Output(outfile)
+    alertFile = Output.Output(alertfile)
     while True:
         out = ""
         pre = f"\033[{len(stations) * 3}A"
