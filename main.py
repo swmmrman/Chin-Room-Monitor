@@ -1,9 +1,10 @@
-import serial
-import sys
 import os
-import libs.Stations as Stations
-from libs import Output
+import sys
 from collections import OrderedDict
+
+import libs.Stations as Stations
+import serial
+from libs import Output
 
 outfile = ""
 try:
@@ -18,7 +19,7 @@ if len(sys.argv) == 2:
 else:
     num = 0
 
-monitor_path = f'/dev/tty{num}'
+monitor_path = f"/dev/tty{num}"
 
 high_temp = 68.5
 crit_temp = 75.0
@@ -32,19 +33,19 @@ def soundAlarm(station, temp, outfile):
 
 
 if not os.path.exists(monitor_path):
-    print(F"Device: {monitor_path} not found.")
+    print(f"Device: {monitor_path} not found.")
     sys.exit(1)
 with serial.Serial(monitor_path, 115200) as ser:
-    print(ser.readline().decode('utf-8')) #discard startup line
+    print(ser.readline().decode("utf-8"))  # discard startup line
     pageFile = Output.Output(outfile)
     while True:
         out = ""
-        pre = F"\033[{len(stations)*3}A"
-        line = ser.readline().decode('utf-8').strip()
+        pre = f"\033[{len(stations) * 3}A"
+        line = ser.readline().decode("utf-8").strip()
         (station, temp, humidity, count) = line.split()
         station_number = station.strip("R")
         uptime = count.split(":")[1]
-        temp = float(temp.strip('f'))
+        temp = float(temp.strip("f"))
         humidity = float(humidity.strip("%"))
         if station_number not in stations:
             stations[station_number] = Stations.Station(station_number, temp, humidity)
@@ -53,7 +54,7 @@ with serial.Serial(monitor_path, 115200) as ser:
             stations[station_number].update(temp, humidity)
         for st in stations.values():
             out += st.print_station()
-        print(F"{pre}{out}", end="")
+        print(f"{pre}{out}", end="")
         cleanout = out.replace("\033[K", "")
         pageFile.update_page(cleanout)
         #if temp > crit_temp:
