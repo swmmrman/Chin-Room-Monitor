@@ -28,10 +28,10 @@ crit_temp = 75.0
 
 stations = {}
 
-def soundAlarm(station, temp, outfile):
-    out = Output.Output(outfile)
-    out.update_page(F"Over Station:{station} temp:{temp}f")
 
+def set_alarm(alerting, station, temp, outfile):
+    out = Output.Output(outfile)
+    out.update_page(f"Over Station:{station} temp:{temp}f")
 
 
 if not os.path.exists(monitor_path):
@@ -60,7 +60,9 @@ with serial.Serial(monitor_path, 115200) as ser:
         print(f"{pre}{out}", end="")
         cleanout = out.replace("\033[K", "")
         pageFile.update_page(cleanout)
-        #if temp > crit_temp:
-        #    soundAlarm(station_number, temp, outfile)
-        #elif temp > high_temp:
-            #soundAlarm(station_number, temp, outfile)
+        # if temp > crit_temp:
+        #     set_alarm(2, station_number, temp, alertFile)
+        # elif temp > high_temp:
+        #     set_alarm(1, station_number, temp, alertFile)
+        # else:
+        #     set_alarm(0, station_number, temp, alertFile)
