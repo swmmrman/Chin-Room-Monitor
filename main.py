@@ -1,4 +1,5 @@
 import os
+import signal
 import sys
 from collections import OrderedDict
 
@@ -30,6 +31,17 @@ crit_temp = 75.0
 
 stations = {}
 alerts = {}
+running = True
+
+
+def signal_handler(sig, frame):
+    global running
+    running = False
+    print("Exiting Please wait")
+
+
+signal.signal(signal.Signals.SIGINT, signal_handler)
+
 
 if not os.path.exists(monitor_path):
     print(f"Device: {monitor_path} not found.")
@@ -38,7 +50,7 @@ with serial.Serial(monitor_path, 115200) as ser:
     print(ser.readline().decode("utf-8"))  # discard startup line
     pageFile = Output.Output(outfile)
     alertFile = Output.Output(alertfile)
-    while True:
+    while running:
         out = ""
         outa = ""
         pre = f"\033[{len(stations) * 3}A"
