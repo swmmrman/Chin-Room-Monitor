@@ -2,9 +2,10 @@ import os
 import sys
 from collections import OrderedDict
 
+import serial
+
 import libs.Alerts as Alerts
 import libs.Stations as Stations
-import serial
 from libs import Output
 
 outfile = ""
