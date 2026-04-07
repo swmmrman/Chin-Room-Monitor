@@ -37,7 +37,7 @@ running = True
 def signal_handler(sig, frame):
     global running
     running = False
-    print("Exiting Please wait")
+    print("\rExiting Please wait")
     sys.exit()
 
 
