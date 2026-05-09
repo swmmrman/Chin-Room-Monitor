@@ -1,3 +1,5 @@
 .venv
 libs/__pycache__/
 venv-x86
+/param.cfg
+
