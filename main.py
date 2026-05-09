@@ -11,7 +11,7 @@ from libs import Output
 
 outfile = ""
 alertfile = ""
-run_status_file = ""
+callfile = ""
 
 try:
     f = open("param.cfg", "r")
@@ -58,6 +58,7 @@ with serial.Serial(monitor_path, 115200) as ser:
     print(ser.readline().decode("utf-8"))  # discard startup line
     pageFile = Output.Output(outfile)
     alertFile = Output.Output(alertfile)
+    callFile = Output.Output(callfile)
     while running:
         out = ""
         outa = ""
@@ -87,3 +88,4 @@ with serial.Serial(monitor_path, 115200) as ser:
         cleanout = out.replace("\033[K", "")
         pageFile.update_page(cleanout)
         alertFile.update_page(outa)
+        callFile.update_page(calling)
