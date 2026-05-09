@@ -17,7 +17,7 @@ try:
     f = open("param.cfg", "r")
     outfile = f.readline().strip("\n")
     alertfile = f.readline().strip("\n")
-    run_status_file = f.readline().strip("\n")
+    callfile = f.readline().strip("\n")
 except FileNotFoundError:
     print("param.cfg is missing.")
     sys.exit(1)
