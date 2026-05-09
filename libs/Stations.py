@@ -30,3 +30,6 @@ class Station:
             f"\033[KTemperature: \tMin:{self.low_temp: 3.1f}f Max:{self.high_temp: 3.1f}f\tCur:{self.current_temp: 3.1f}f\n"
             f"\033[KHumidity: \tMin:{self.low_humidity: 3.1f}% Max:{self.high_humidity: 3.1f}%\tCur:{self.current_humidity: 3.1f}%\n"
         )
+
+    def get_temp(self):
+        return self.current_temp

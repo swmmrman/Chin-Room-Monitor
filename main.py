@@ -35,6 +35,7 @@ crit_temp = 75.0
 stations = {}
 alerts = {}
 running = True
+calling = False
 
 
 def signal_handler(sig, frame):
@@ -75,8 +76,10 @@ with serial.Serial(monitor_path, 115200) as ser:
         else:
             stations[station_number].update(temp, humidity)
             alerts[station_number].update(temp)
+        highest_temp = 0
         for st in stations.values():
             out += st.print_station()
+            highest_temp = max(highest_temp, st.get_temp())
         for al in alerts.values():
             outa += al.print_alert()
 
