@@ -82,7 +82,7 @@ with serial.Serial(monitor_path, 115200) as ser:
             highest_temp = max(highest_temp, st.get_temp())
         for al in alerts.values():
             outa += al.print_alert()
-
+        calling = False if highest_temp < high_temp else True
         print(f"{pre}{out}", end="")
         cleanout = out.replace("\033[K", "")
         pageFile.update_page(cleanout)
