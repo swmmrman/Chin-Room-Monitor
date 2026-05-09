@@ -36,13 +36,16 @@ running = True
 
 def signal_handler(sig, frame):
     global running
+    if sig == signal.Signals.SIGTERM:
+        print("\rRude")
+        sys.exit()
     running = False
     print("\rExiting Please wait")
     sys.exit()
 
 
 signal.signal(signal.Signals.SIGINT, signal_handler)
-
+signal.signal(signal.Signals.SIGTERM, signal_handler)
 
 if not os.path.exists(monitor_path):
     print(f"Device: {monitor_path} not found.")
