@@ -54,7 +54,7 @@ signal.signal(signal.Signals.SIGTERM, signal_handler)
 if not os.path.exists(monitor_path):
     print(f"Device: {monitor_path} not found.")
     sys.exit(1)
-with serial.Serial(monitor_path, 115200) as ser:
+with serial.Serial(monitor_path, 115200, timeout=1) as ser:
     print(ser.readline().decode("utf-8"))  # discard startup line
     pageFile = Output.Output(outfile)
     alertFile = Output.Output(alertfile)
@@ -64,25 +64,26 @@ with serial.Serial(monitor_path, 115200) as ser:
         outa = ""
         pre = f"\033[{len(stations) * 3}A"
         line = ser.readline().decode("utf-8").strip()
-        (station, temp, humidity, count) = line.split()
-        station_number = station.strip("R")
-        uptime = count.split(":")[1]
-        temp = float(temp.strip("f"))
-        humidity = float(humidity.strip("%"))
-        if station_number not in stations:
-            stations[station_number] = Stations.Station(station_number, temp, humidity)
-            stations = OrderedDict(sorted(stations.items()))
-            alerts[station_number] = Alerts.Alert(station_number, temp)
-            alerts = OrderedDict(sorted(alerts.items()))
-        else:
-            stations[station_number].update(temp, humidity)
-            alerts[station_number].update(temp)
-        highest_temp = 0
-        for st in stations.values():
-            out += st.print_station()
-            highest_temp = max(highest_temp, st.get_temp())
-        for al in alerts.values():
-            outa += al.print_alert()
+        if line != ""
+            (station, temp, humidity, count) = line.split()
+            station_number = station.strip("R")
+            uptime = count.split(":")[1]
+            temp = float(temp.strip("f"))
+            humidity = float(humidity.strip("%"))
+            if station_number not in stations:
+                stations[station_number] = Stations.Station(station_number, temp, humidity)
+                stations = OrderedDict(sorted(stations.items()))
+                alerts[station_number] = Alerts.Alert(station_number, temp)
+                alerts = OrderedDict(sorted(alerts.items()))
+            else:
+                stations[station_number].update(temp, humidity)
+                alerts[station_number].update(temp)
+            highest_temp = 0
+            for st in stations.values():
+                out += st.print_station()
+                highest_temp = max(highest_temp, st.get_temp())
+            for al in alerts.values():
+                outa += al.print_alert()
         calling = "False" if highest_temp < high_temp else "True"
         print(f"{pre}{out}", end="")
         cleanout = out.replace("\033[K", "")
