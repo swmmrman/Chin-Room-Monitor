@@ -55,7 +55,8 @@ if not os.path.exists(monitor_path):
     print(f"Device: {monitor_path} not found.")
     sys.exit(1)
 with serial.Serial(monitor_path, 115200, timeout=1) as ser:
-    print(ser.readline().decode("utf-8"))  # discard startup line
+    print(ser.readline().decode("utf-8"))  # discard startup lines
+    print(ser.readline().decode("utf-8"))  # discard startup lines
     pageFile = Output.Output(outfile)
     alertFile = Output.Output(alertfile)
     callFile = Output.Output(callfile)
@@ -64,6 +65,7 @@ with serial.Serial(monitor_path, 115200, timeout=1) as ser:
         outa = ""
         pre = f"\033[{len(stations) * 3}A"
         line = ser.readline().decode("utf-8").strip()
+        highest_temp = 0
         if line != "":
             (station, temp, humidity, count) = line.split()
             station_number = station.strip("R")
@@ -80,7 +82,6 @@ with serial.Serial(monitor_path, 115200, timeout=1) as ser:
             else:
                 stations[station_number].update(temp, humidity)
                 alerts[station_number].update(temp)
-            highest_temp = 0
             for st in stations.values():
                 out += st.print_station()
                 highest_temp = max(highest_temp, st.get_temp())
